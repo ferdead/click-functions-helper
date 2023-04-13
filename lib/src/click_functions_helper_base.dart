@@ -108,4 +108,16 @@ class FunctionsHelper {
     if (texto.length >= tamanho) return texto.substring(0, tamanho);
     return texto.padLeft(tamanho, ' ');
   }
+
+  ///Esta função retira todos os acentos de uma string
+  static String retiraAcentos(String str) {
+    var comAcento = 'ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž';
+    var semAcento = 'AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz';
+
+    for (var i = 0; i < comAcento.length; i++) {
+      str = str.replaceAll(comAcento[i], semAcento[i]);
+    }
+
+    return str;
+  }
 }

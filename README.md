@@ -58,3 +58,6 @@ Alinha um texto à esquerda em uma string com espaços.
 
 ## right(String texto, int tamanho)
 Alinha um texto à direita em uma string com espaços.
+
+## retiraAcentos(String str)
+Retira acentuação de uma string.
