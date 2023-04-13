@@ -11,11 +11,11 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-O FunctionsHelper é um pacote Dart que fornece algumas funções auxiliares para tarefas comuns.
+
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+O FunctionsHelper é um pacote Dart que fornece algumas funções auxiliares para tarefas comuns.
 
 ## Getting started
 
@@ -27,12 +27,8 @@ Adicione o pacote ao arquivo pubspec.yaml do seu projeto:
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+veja alguns exemplos na pasta `/example` 
 
-```dart
-const like = 'sample';
-```
 
 ## Funções:
 
