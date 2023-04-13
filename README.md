@@ -22,7 +22,7 @@ O FunctionsHelper é um pacote Dart que fornece algumas funções auxiliares par
 Adicione o pacote ao arquivo pubspec.yaml do seu projeto:
 ```yaml
     dependencies:
-        functions_helper: ^1.0.0
+        click_functions_helper: ^1.0.0
 ```
 
 ## Usage
