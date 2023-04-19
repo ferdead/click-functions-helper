@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 
 class FunctionsHelper {
   FunctionsHelper._();
@@ -24,6 +25,14 @@ class FunctionsHelper {
         return '${Directory.current.absolute.path}/$filename';
       }
     }
+  }
+
+  static Image? base64toImage(String strBase64) {
+    if (strBase64 == '') {
+      return null;
+    }
+    final decodedBytes = base64Decode(strBase64);
+    return Image.memory(decodedBytes);
   }
 
   ///Este método salva uma String em Base64 com imagem em um arquivo.
@@ -119,5 +128,38 @@ class FunctionsHelper {
     }
 
     return str;
+  }
+
+  static int _ord(String str) {
+    return str.codeUnitAt(0);
+  }
+
+  static String _dechex(int number) {
+    if (number < 0) {
+      number = 0xffffffff + number + 1;
+    }
+    return number.toRadixString(16);
+  }
+
+  static String getCRC16(payload) {
+    //const idCRC16 = '63';
+    //payload = payload + idCRC16 + '04';
+
+    var polinomio = 0x1021;
+    var resultado = 0xffff;
+    var length = 0;
+
+    if ((length = payload.length) > 0) {
+      for (var offset = 0; offset < length; offset++) {
+        resultado ^= _ord(payload[offset]) << 8;
+        for (var bitwise = 0; bitwise < 8; bitwise++) {
+          if (((resultado <<= 1) & 0x10000) != 0) resultado ^= polinomio;
+          resultado &= 0xffff;
+        }
+      }
+    }
+
+    //return idCRC16 + '04' + _dechex(resultado).toUpperCase();
+    return _dechex(resultado).toUpperCase().padLeft(4, '0');
   }
 }
