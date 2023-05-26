@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:click_functions_helper/cripto/crypto_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 
 class FunctionsHelper {
   FunctionsHelper._();
@@ -27,6 +30,7 @@ class FunctionsHelper {
     }
   }
 
+  ///Converte uma String Base64 em imagem
   static Image? base64toImage(String strBase64) {
     if (strBase64 == '') {
       return null;
@@ -34,6 +38,23 @@ class FunctionsHelper {
     final decodedBytes = base64Decode(strBase64);
     return Image.memory(decodedBytes);
   }
+
+  ///Converte uma Imagem em uma String Base64
+  static String imageToBase64(img.Image image) {
+    return base64Encode(image.getBytes());
+  }
+
+  // static Future<String> imageToBase64(ImageProvider imageProvider) async {
+  //   Completer<Uint8List> completer = Completer();
+  //   var listener = ImageStreamListener((ImageInfo info, bool synchronousCall) async {
+  //     final bytes = await info.image.toByteData(format: ImageByteFormat.png);
+  //     completer.complete(bytes!.buffer.asUint8List());
+  //   });
+  //   imageProvider.resolve(ImageConfiguration()).addListener(listener);
+
+  //   final bytes = await completer.future;
+  //   return base64.encode(bytes);
+  // }
 
   ///Este método salva uma String em Base64 com imagem em um arquivo.
   static void saveImageStringBase64ToFile(String base64, String filename) async {
@@ -162,4 +183,97 @@ class FunctionsHelper {
     //return idCRC16 + '04' + _dechex(resultado).toUpperCase();
     return _dechex(resultado).toUpperCase().padLeft(4, '0');
   }
+
+  static bool validarCPF(String cpf) {
+    // Remove caracteres não numéricos do CPF
+    cpf = cpf.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // Verifica se o CPF tem 11 dígitos
+    if (cpf.length != 11) {
+      return false;
+    }
+
+    // Verifica se todos os dígitos são iguais
+    if (RegExp(r'^(\d)\1*$').hasMatch(cpf)) {
+      return false;
+    }
+
+    // Calcula o primeiro dígito verificador
+    int soma = 0;
+    for (int i = 0; i < 9; i++) {
+      soma += int.parse(cpf[i]) * (10 - i);
+    }
+    int digito1 = 11 - (soma % 11);
+    if (digito1 > 9) {
+      digito1 = 0;
+    }
+
+    // Calcula o segundo dígito verificador
+    soma = 0;
+    for (int i = 0; i < 10; i++) {
+      soma += int.parse(cpf[i]) * (11 - i);
+    }
+    int digito2 = 11 - (soma % 11);
+    if (digito2 > 9) {
+      digito2 = 0;
+    }
+
+    // Verifica se os dígitos calculados são iguais aos dígitos do CPF
+    if (digito1 == int.parse(cpf[9]) && digito2 == int.parse(cpf[10])) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static bool validarCNPJ(String cnpj) {
+    // Remove caracteres não numéricos do CNPJ
+    cnpj = cnpj.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // Verifica se o CNPJ tem 14 dígitos
+    if (cnpj.length != 14) {
+      return false;
+    }
+
+    // Verifica se todos os dígitos são iguais
+    if (RegExp(r'^(\d)\1*$').hasMatch(cnpj)) {
+      return false;
+    }
+
+    // Calcula o primeiro dígito verificador
+    int soma = 0;
+    int peso = 2;
+    for (int i = 11; i >= 0; i--) {
+      soma += int.parse(cnpj[i]) * peso;
+      peso = (peso == 9) ? 2 : peso + 1;
+    }
+    int digito1 = 11 - (soma % 11);
+    if (digito1 > 9) {
+      digito1 = 0;
+    }
+
+    // Calcula o segundo dígito verificador
+    soma = 0;
+    peso = 2;
+    for (int i = 12; i >= 0; i--) {
+      soma += int.parse(cnpj[i]) * peso;
+      peso = (peso == 9) ? 2 : peso + 1;
+    }
+    int digito2 = 11 - (soma % 11);
+    if (digito2 > 9) {
+      digito2 = 0;
+    }
+
+    // Verifica se os dígitos calculados são iguais aos dígitos do CNPJ
+    if (digito1 == int.parse(cnpj[12]) && digito2 == int.parse(cnpj[13])) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static isValidCPForCNPJ(String cpfCNPJ) => validarCPF(cpfCNPJ) || validarCNPJ(cpfCNPJ);
+
+  static String encriptar(String texto) => CryptoUtils.encryptString(texto);
+  static String descriptar(String texto) => CryptoUtils.decryptString(texto);
 }

@@ -1,6 +1,6 @@
 name: click_functions_helper
 description: Funções de apoio para manipular dados, como alinhamento de string, retirar acentuações e outros.
-version: 1.0.3
+version: 1.0.10 
 repository: https://github.com/ferdead/click-functions-helper
 
 environment:
@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  image: ^4.0.15
+  encrypt: ^5.0.0
 
 dev_dependencies:
   lints: ^2.0.0
